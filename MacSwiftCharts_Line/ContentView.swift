@@ -12,15 +12,10 @@ import Charts
 // MARK: - Swift Chart View
 
 struct ChartData: Identifiable {
-    var id: String { category }
-    var category: String
-    var valueSet: [ValueSet]
-}
-
-struct ValueSet: Identifiable {
     var id = UUID()
-    let date: Date
-    let value: Int
+    var category: String
+    var date: Date
+    var value: Int
 }
 
 struct ContentView: View {
@@ -29,16 +24,15 @@ struct ContentView: View {
 
     var body: some View {
         Chart {
-            ForEach(viewModel.data) { category in
-                ForEach(category.valueSet) { valueSet in
-                    LineMark(
-                        x: .value("date", valueSet.date, unit: .day),
-                        y: .value("value", valueSet.value)
-                    )
-                    .lineStyle(.init(lineWidth: 1))
-                    .symbol(by: .value("category", category.category))
-                }
-                .foregroundStyle(by: .value("category", category.category))
+            ForEach(viewModel.data) { data in
+                LineMark(
+                    x: .value("date", data.date, unit: .day),
+                    y: .value("value", data.value),
+                    series: .value("category", data.category)
+                )
+                .lineStyle(.init(lineWidth: 1))
+                .foregroundStyle(by: .value("category", data.category))
+                .symbol(by: .value("category", data.category))
             }
         }
         .chartForegroundStyleScale(["apple": .pink, "banana": .yellow])
@@ -86,24 +80,21 @@ class ContentViewModel: ObservableObject {
 #Preview("Swift Charts - Line on Mac") {
     ContentView(viewModel: ContentViewModel(
         [
-            .init(category: "apple", valueSet: [
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 1))!, value: 70),
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 2))!, value: 80),
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 3))!, value: 80),
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 4))!, value: 85),
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 5))!, value: 90),
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 6))!, value: 80),
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 7))!, value: 80),
-            ]),
-            .init(category: "banana", valueSet: [
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 1))!, value: 100),
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 2))!, value: 110),
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 3))!, value: 120),
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 4))!, value: 115),
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 5))!, value: 110),
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 6))!, value: 100),
-                .init(date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 7))!, value: 120),
-            ]),
+            .init(category: "apple", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 1))!, value: 70),
+            .init(category: "apple", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 2))!, value: 80),
+            .init(category: "apple", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 3))!, value: 80),
+            .init(category: "apple", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 4))!, value: 85),
+            .init(category: "apple", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 5))!, value: 90),
+            .init(category: "apple", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 6))!, value: 80),
+            .init(category: "apple", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 7))!, value: 80),
+
+            .init(category: "banana", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 1))!, value: 100),
+            .init(category: "banana", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 2))!, value: 110),
+            .init(category: "banana", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 3))!, value: 120),
+            .init(category: "banana", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 4))!, value: 115),
+            .init(category: "banana", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 5))!, value: 110),
+            .init(category: "banana", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 6))!, value: 100),
+            .init(category: "banana", date: Calendar.current.date(from: DateComponents(year: 2025, month: 5, day: 7))!, value: 120),
         ]
     ))
 }
