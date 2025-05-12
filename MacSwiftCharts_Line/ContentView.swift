@@ -36,11 +36,6 @@ struct ContentView: View {
                         y: .value("value", valueSet.value)
                     )
                     .lineStyle(.init(lineWidth: 1))
-
-                    PointMark(
-                        x: .value("date", valueSet.date, unit: .day),
-                        y: .value("value", valueSet.value)
-                    )
                     .symbol(by: .value("category", category.category))
                 }
                 .foregroundStyle(by: .value("category", category.category))
@@ -48,6 +43,11 @@ struct ContentView: View {
         }
         .chartForegroundStyleScale(["apple": .pink, "banana": .yellow])
         .chartSymbolScale(["apple": .diamond, "banana": .circle])
+        .chartLegend(
+            position: .top,
+            alignment: .leading,
+            spacing: 10
+        )
         .chartXAxis {
             AxisMarks(values: .stride(by: .day, count: 1)) {
                 AxisGridLine()
@@ -55,11 +55,6 @@ struct ContentView: View {
                 AxisValueLabel()
             }
         }
-        .chartLegend(
-            position: .top,
-            alignment: .leading,
-            spacing: 10
-        )
         .chartXAxisLabel(position: .bottom, alignment: .center, spacing: 10) {
             Text("Date").font(.title3)
         }
