@@ -24,15 +24,15 @@ struct ContentView: View {
 
     var body: some View {
         Chart {
-            ForEach(viewModel.data) { data in
+            ForEach(viewModel.data) { element in
                 LineMark(
-                    x: .value("date", data.date, unit: .day),
-                    y: .value("value", data.value),
-                    series: .value("category", data.category)
+                    x: .value("date", element.date, unit: .day),
+                    y: .value("value", element.value),
+                    series: .value("category", element.category)
                 )
                 .lineStyle(.init(lineWidth: 1))
-                .foregroundStyle(by: .value("category", data.category))
-                .symbol(by: .value("category", data.category))
+                .foregroundStyle(by: .value("category", element.category))
+                .symbol(by: .value("category", element.category))
             }
         }
         .chartForegroundStyleScale(["apple": .pink, "banana": .yellow])
